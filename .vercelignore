@@ -1,0 +1,5 @@
+# Ignore backend server directory from Vercel frontend build
+server/
+Dockerfile
+Dockerfile.frontend
+docker-compose.yml
