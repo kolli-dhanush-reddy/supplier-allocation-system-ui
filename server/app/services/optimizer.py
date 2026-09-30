@@ -265,8 +265,8 @@ def solve(request: OptimizationRequest) -> OptimizationResponse:
                 f"capacity_{s}_{t}",
             )
 
-    # 4. MOQ + binary linking — only for eligible pairs
-    for (s, k) in SK_PAIRS:
+    # 4. MOQ + binary linking — only for pairs that actually need binary vars
+    for (s, k) in SK_NEEDS_MOQ:
         moq_val = getattr(sup_map[s], "moq", 0)
         max_oq  = getattr(sup_map[s], "max_order_qty", None)
         for t in T_all:
@@ -275,6 +275,14 @@ def solve(request: OptimizationRequest) -> OptimizationResponse:
                 prob += x[(s, k, t)] <= max_oq * y[(s, k, t)], f"moq_hi_{s}_{k}_{t}"
             else:
                 prob += x[(s, k, t)] <= big_M * y[(s, k, t)], f"moq_hi_{s}_{k}_{t}"
+
+    # Simple max order qty for pairs without MOQ binary vars
+    for (s, k) in SK_PAIRS:
+        if (s, k) not in SK_NEEDS_MOQ:
+            max_oq = getattr(sup_map[s], "max_order_qty", None)
+            if max_oq and max_oq > 0:
+                for t in T_all:
+                    prob += x[(s, k, t)] <= max_oq, f"max_oq_{s}_{k}_{t}"
 
     # 5. Strategy-specific constraints
     if strategy == OptimizationStrategy.dual_sourcing:
