@@ -58,6 +58,7 @@ app.include_router(nova.router)          # ← Nova API management endpoints
 
 # ── Health (no auth) ─────────────────────────────────────────────────────────
 @app.get("/health", tags=["Health"])
+@app.get("/healthz", tags=["Health"])
 async def health() -> dict:
     from app.services.nova_seed import status as nova_status
     ns = nova_status()
