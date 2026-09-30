@@ -192,18 +192,15 @@ def solve(request: OptimizationRequest) -> OptimizationResponse:
     big_M = max((sum(dem[k].values()) for k in K), default=100_000) + 1
 
     # ── Decision variables — only for eligible pairs ──────────────────────────
-    x = pulp.LpVariable.dicts(
-        "x",
-        [(s, k, t) for (s, k) in SK_PAIRS for t in T_all],
-        lowBound=0,
-        cat="Integer",
-    )
+    x = {
+        (s, k, t): pulp.LpVariable(f"x_{s}_{k}_{t}", lowBound=0, cat="Integer")
+        for (s, k) in SK_PAIRS for t in T_all
+    }
     # Binary MOQ vars — only for pairs that actually need MOQ enforcement
-    y = pulp.LpVariable.dicts(
-        "y",
-        [(s, k, t) for (s, k) in SK_NEEDS_MOQ for t in T_all],
-        cat="Binary",
-    )
+    y = {
+        (s, k, t): pulp.LpVariable(f"y_{s}_{k}_{t}", cat="Binary")
+        for (s, k) in SK_NEEDS_MOQ for t in T_all
+    }
 
     # ── Problem ───────────────────────────────────────────────────────────────
     prob = pulp.LpProblem("NexusFlow_MILP", pulp.LpMinimize)
