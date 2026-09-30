@@ -1,0 +1,60 @@
+version: '3.9'
+
+# ─────────────────────────────────────────────────────────────
+#  NexusFlow — Local Development Stack
+#
+#  Start everything:
+#    docker compose up --build
+#
+#  Start only the backend:
+#    docker compose up backend
+#
+#  Access:
+#    Frontend  →  http://localhost:3000
+#    Backend   →  http://localhost:8000
+#    API Docs  →  http://localhost:8000/docs
+# ─────────────────────────────────────────────────────────────
+
+services:
+
+  # ── Python FastAPI backend ──────────────────────────────────
+  backend:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: nexusflow-backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./server/.env          # picks up NOVA_API_KEY etc.
+    environment:
+      - HOST=0.0.0.0
+      - PORT=8000
+      - APP_ENV=development
+      - ALLOWED_ORIGINS=http://localhost:3000
+    volumes:
+      - ./server:/app          # hot-reload on code changes
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # ── Next.js frontend ────────────────────────────────────────
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: nexusflow-frontend
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env.local             # picks up NEXT_PUBLIC_* vars
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped

@@ -1,0 +1,45 @@
+# ── v0 sandbox internal files ─────────────────────────────────
+__v0_runtime_loader.js
+__v0_devtools.tsx
+__v0_jsx-dev-runtime.ts
+.snowflake/
+.v0-trash/
+.vercel/
+
+# ── Environment / secrets — NEVER commit these ────────────────
+.env
+.env.local
+.env.*.local
+server/.env
+# Keep .env.example files (they are safe templates)
+!.env.example
+!server/.env.example
+
+# ── Next.js ───────────────────────────────────────────────────
+.next/
+out/
+
+# ── Python ────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+server/.venv/
+server/venv/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ── Node ──────────────────────────────────────────────────────
+node_modules/
+
+# ── Docker ────────────────────────────────────────────────────
+.docker/
+
+# ── OS ────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db

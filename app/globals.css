@@ -1,0 +1,249 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+
+@custom-variant dark (&:is(.dark *));
+
+/* ── Design token overrides ──────────────────────────────────────────────────
+   Premium editorial palette: deep zinc canvas, cobalt blue accent,
+   architectural borders, zero glow/neon.
+   ─────────────────────────────────────────────────────────────────────────── */
+:root {
+  color-scheme: light;
+
+  /* Canvas */
+  --background:        oklch(0.985 0.002 240);   /* zinc-50 tinted */
+  --foreground:        oklch(0.13 0.005 240);    /* near-black */
+
+  /* Surfaces */
+  --card:              oklch(1 0 0);
+  --card-foreground:   oklch(0.13 0.005 240);
+  --popover:           oklch(1 0 0);
+  --popover-foreground: oklch(0.13 0.005 240);
+
+  /* Primary — cobalt blue */
+  --primary:           oklch(0.52 0.22 258);
+  --primary-foreground: oklch(0.98 0 0);
+
+  /* Secondary / muted */
+  --secondary:         oklch(0.962 0.003 240);
+  --secondary-foreground: oklch(0.26 0.01 240);
+  --muted:             oklch(0.962 0.003 240);
+  --muted-foreground:  oklch(0.50 0.01 240);
+  --accent:            oklch(0.95 0.01 240);
+  --accent-foreground: oklch(0.26 0.01 240);
+
+  /* Semantic */
+  --destructive:       oklch(0.57 0.22 27);
+
+  /* Borders — thin, architectural */
+  --border:            oklch(0.908 0.004 240);
+  --input:             oklch(0.908 0.004 240);
+  --ring:              oklch(0.52 0.22 258);
+
+  /* Charts — cobalt-anchored, desaturated */
+  --chart-1:           oklch(0.52 0.22 258);   /* cobalt */
+  --chart-2:           oklch(0.60 0.14 185);   /* teal */
+  --chart-3:           oklch(0.58 0.16 295);   /* violet */
+  --chart-4:           oklch(0.70 0.16 55);    /* amber */
+  --chart-5:           oklch(0.60 0.18 22);    /* rose */
+
+  --radius: 0.5rem;
+
+  /* Sidebar tokens */
+  --sidebar:                oklch(0.105 0.008 255);  /* near-black with blue tint */
+  --sidebar-foreground:     oklch(0.92 0.005 255);
+  --sidebar-primary:        oklch(0.52 0.22 258);
+  --sidebar-primary-foreground: oklch(0.98 0 0);
+  --sidebar-accent:         oklch(0.18 0.01 255);
+  --sidebar-accent-foreground: oklch(0.80 0.01 255);
+  --sidebar-border:         oklch(1 0 0 / 0.06);
+  --sidebar-ring:           oklch(0.52 0.22 258);
+}
+
+/* ── Inline theme mapping ────────────────────────────────────────────────────
+   Exposes CSS vars as Tailwind utilities via @theme inline.
+   ─────────────────────────────────────────────────────────────────────────── */
+@theme inline {
+  --color-background:           var(--background);
+  --color-foreground:           var(--foreground);
+  --color-card:                 var(--card);
+  --color-card-foreground:      var(--card-foreground);
+  --color-popover:              var(--popover);
+  --color-popover-foreground:   var(--popover-foreground);
+  --color-primary:              var(--primary);
+  --color-primary-foreground:   var(--primary-foreground);
+  --color-secondary:            var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted:                var(--muted);
+  --color-muted-foreground:     var(--muted-foreground);
+  --color-accent:               var(--accent);
+  --color-accent-foreground:    var(--accent-foreground);
+  --color-destructive:          var(--destructive);
+  --color-border:               var(--border);
+  --color-input:                var(--input);
+  --color-ring:                 var(--ring);
+  --color-chart-1:              var(--chart-1);
+  --color-chart-2:              var(--chart-2);
+  --color-chart-3:              var(--chart-3);
+  --color-chart-4:              var(--chart-4);
+  --color-chart-5:              var(--chart-5);
+  --color-sidebar:              var(--sidebar);
+  --color-sidebar-foreground:   var(--sidebar-foreground);
+  --color-sidebar-primary:      var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent:       var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border:       var(--sidebar-border);
+  --color-sidebar-ring:         var(--sidebar-ring);
+
+  --radius-sm:  calc(var(--radius) * 0.6);
+  --radius-md:  calc(var(--radius) * 0.8);
+  --radius-lg:  var(--radius);
+  --radius-xl:  calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/* ── Base layer ──────────────────────────────────────────────────────────────
+   Font smoothing, selection colour, architectural defaults.
+   ─────────────────────────────────────────────────────────────────────────── */
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    letter-spacing: -0.01em;
+  }
+
+  /* Monospace numbers for metrics */
+  [data-metric], .metric {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum' 1;
+  }
+}
+
+/* ── Selection ───────────────────────────────────────────────────────────────*/
+::selection {
+  background: oklch(0.52 0.22 258 / 0.18);
+  color: oklch(0.13 0.005 240);
+}
+
+/* ── Blueprint grid utility ──────────────────────────────────────────────────
+   Use class="grid-blueprint" on any section for the dot-grid background.
+   ─────────────────────────────────────────────────────────────────────────── */
+.grid-blueprint {
+  background-image:
+    radial-gradient(oklch(0.70 0.005 240 / 0.55) 1.2px, transparent 1.2px);
+  background-size: 20px 20px;
+}
+
+/* ── Sidebar dark surface ────────────────────────────────────────────────────*/
+.surface-sidebar {
+  background: oklch(0.105 0.008 255);
+  border-right: 1px solid oklch(1 0 0 / 0.06);
+}
+
+/* ── Card surfaces — three levels of depth ───────────────────────────────── */
+.surface-0 { background: oklch(0.985 0.002 240); }   /* page canvas   */
+.surface-1 { background: oklch(1 0 0); }              /* base card     */
+.surface-2 { background: oklch(0.975 0.003 240); }    /* inset section */
+
+/* ── Status pulse dot ────────────────────────────────────────────────────────
+   <span class="pulse-dot pulse-dot--green" />
+   ─────────────────────────────────────────────────────────────────────────── */
+.pulse-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.pulse-dot--green {
+  background: oklch(0.62 0.18 145);
+  box-shadow: 0 0 0 0 oklch(0.62 0.18 145 / 0.5);
+  animation: pulse-ring 2s ease-in-out infinite;
+}
+.pulse-dot--amber {
+  background: oklch(0.75 0.16 70);
+  box-shadow: 0 0 0 0 oklch(0.75 0.16 70 / 0.5);
+  animation: pulse-ring 2s ease-in-out infinite;
+}
+.pulse-dot--red {
+  background: oklch(0.60 0.22 27);
+}
+
+@keyframes pulse-ring {
+  0%   { box-shadow: 0 0 0 0 currentColor; }
+  70%  { box-shadow: 0 0 0 5px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+
+/* ── Table — editorial compact style ────────────────────────────────────────*/
+.table-editorial {
+  font-size: 0.8125rem;   /* 13px */
+  border-collapse: collapse;
+  width: 100%;
+}
+.table-editorial th {
+  font-weight: 500;
+  color: oklch(0.50 0.01 240);
+  text-transform: uppercase;
+  font-size: 0.6875rem;   /* 11px */
+  letter-spacing: 0.06em;
+  padding: 8px 12px;
+  border-bottom: 2px solid oklch(0.908 0.004 240);
+  white-space: nowrap;
+}
+.table-editorial td {
+  padding: 9px 12px;
+  border-bottom: 1px solid oklch(0.908 0.004 240 / 0.6);
+  color: oklch(0.26 0.01 240);
+  vertical-align: middle;
+}
+.table-editorial tr:last-child td {
+  border-bottom: none;
+}
+.table-editorial tr:hover td {
+  background: oklch(0.962 0.003 240 / 0.6);
+}
+
+/* ── Button micro-interactions ───────────────────────────────────────────────*/
+button:not(:disabled) {
+  transition: transform 80ms ease, opacity 80ms ease;
+}
+button:not(:disabled):active {
+  transform: scale(0.975);
+}
+
+/* ── Metric number ───────────────────────────────────────────────────────────
+   Big, sharp, tabular financial numbers.
+   ─────────────────────────────────────────────────────────────────────────── */
+.num {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+  font-weight: 600;
+}
+
+/* ── Focus ring — clean cobalt ───────────────────────────────────────────────*/
+:focus-visible {
+  outline: 2px solid oklch(0.52 0.22 258);
+  outline-offset: 2px;
+}
+
+/* ── Scrollbars ──────────────────────────────────────────────────────────────*/
+::-webkit-scrollbar        { width: 6px; height: 6px; }
+::-webkit-scrollbar-track  { background: transparent; }
+::-webkit-scrollbar-thumb  { background: oklch(0.80 0.004 240); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: oklch(0.65 0.006 240); }
