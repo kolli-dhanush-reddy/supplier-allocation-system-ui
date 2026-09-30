@@ -266,9 +266,9 @@ export default function Page() {
 
         {/* User */}
         <div className="flex items-center gap-2.5">
-          <div className="flex size-7 shrink-0 items-center justify-center rounded-full bg-blue-500/80 text-[11px] font-semibold text-white">JS</div>
+          <div className="flex size-7 shrink-0 items-center justify-center rounded-full bg-blue-500/80 text-[11px] font-semibold text-white">DK</div>
           <div className="min-w-0 flex-1">
-            <p className="truncate text-[12px] font-medium text-white/70">Jordan Smith</p>
+            <p className="truncate text-[12px] font-medium text-white/70">Dhanush</p>
             <p className="truncate text-[10px] text-white/25">Operations lead</p>
           </div>
           <button className="text-white/20 hover:text-white/50 transition-colors">
@@ -346,7 +346,7 @@ export default function Page() {
           <div>
             <p className="text-[11px] font-medium uppercase tracking-[0.08em] text-zinc-400">{todayLabel()}</p>
             <h1 className="mt-1 text-xl font-semibold tracking-tight text-zinc-900">
-              {greet()}, Jordan
+              {greet()}, Dhanush
             </h1>
           </div>
           <div className="flex gap-2">
